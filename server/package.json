@@ -1,0 +1,29 @@
+{
+  "name": "myFtp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .dist/main.js",
+    "dev": "nodemon",
+    "build": "babel --out-dir .dist/ --extensions \".js\" src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HubertTruong/myFtp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HubertTruong/myFtp/issues"
+  },
+  "homepage": "https://github.com/HubertTruong/myFtp#readme",
+  "dependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "run": "^1.4.0"
+  }
+}
