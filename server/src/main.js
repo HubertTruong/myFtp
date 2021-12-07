@@ -1,10 +1,3 @@
-module.exports = (api) => {
-    api.cache(true);
+import { launch } from "./server";
 
-    const preset = [
-        "@babel/preset-env",
-    ];
-
-    return { presets };
-}
-
+launch(4242);
