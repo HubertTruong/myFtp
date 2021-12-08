@@ -20,4 +20,9 @@ client.on("data", (data) => {
     currentCommand = "USER";
     client.write("USER anonymous");
   };
+
+  if (status == 221) {
+    currentCommand = "QUIT";
+    client.write("Service closing control connection.");
+  };
 });
