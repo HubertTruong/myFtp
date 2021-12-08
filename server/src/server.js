@@ -32,9 +32,19 @@ export function launch(port) {
         case "PWD": 
           socket.write(`257 Requested file action okay, completed. \r\n ${process.cwd()} \r\n`);
           break;
-        case "HELP": 
-          socket.write("214 Help message. \r\n");
+        case "HELP":
+          let help = "USER <username>: check if the user exist\n" + 
+                     "PASS <password>: authenticate the user with a password\n" +
+                     "LIST: list the current directory of the server\n" +
+                     "CWD <directory>: change the current directory of the server\n" +
+                     "RETR <filename>: transfer a copy of the file FILE from the server to the client\n" +
+                     "STOR <filename>: transfer a copy of the file FILE from the client to the server\n" + 
+                     "PWD: display the name of the current directory of the server\n" +
+                     "HELP: send helpful information to the client\n" + 
+                     "QUIT: close the connection and stop the program\n"; 
+          socket.write(help);
           break;
+          
         case "QUIT": 
           socket.write(`221 Service closing control connection. \r\n ${process.exit()} \r\n`);
           break;
