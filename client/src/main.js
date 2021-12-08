@@ -18,7 +18,7 @@ const client = createConnection({ port: 4242 }, () => {
 
 client.on("data", (data) => {
   const message = data.toString();
-  console.log("Message received:\n", message);
+  console.log("Message received:", message);
   rl.question("Enter a command please: ", function(cmd){
     client.write(cmd)
   })

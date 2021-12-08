@@ -1,0 +1,46 @@
+[
+    {
+        "command": "USER <username>",
+        "desc": "check if the user exist"
+    },
+
+    {
+        "command": "PASS <password>",
+        "desc": "authenticate the user with a password"
+    },
+
+    {
+        "command": "LIST",
+        "desc": "list the current directory of the server"
+    },
+
+    {
+        "command": "CWD <directory>",
+        "desc": "change the current directory of the server"
+    },
+
+    {
+        "command": "RETR <filename>",
+        "desc": "transfer a copy of the file FILE from the server to the client"
+    },
+
+    {
+        "command": "STOR <filename>",
+        "desc": "transfer a copy of the file FILE from the client to the server"
+    },
+
+    {
+        "command": "PWD",
+        "desc": "display the name of the current directory of the server"
+    },
+
+    {
+        "command": "HELP",
+        "desc": "send helpful information to the client"
+    },
+
+    {
+        "command": "QUIT",
+        "desc": "close the connection and stop the program"
+    }
+]

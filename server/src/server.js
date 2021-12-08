@@ -1,4 +1,5 @@
 import { createServer } from "net";
+import { fs } from "fs";
 
 export function launch(port) {
 
@@ -17,8 +18,12 @@ export function launch(port) {
         case "PASS": 
           socket.write("331 User name ok, need pass. \r\n");
           break;
-        case "LIST": 
+        case "LIST":
           socket.write("125 Data connection already open; transfer starting. \r\n");
+          /*let files = fs.readdirSync(__dirname);
+          files.forEach(file => {
+            console.log(file);
+          });*/
           break;
         case "CWD": 
           socket.write(`250 Requested file action okay, completed. ${process.chdir()} \r\n`);
@@ -32,19 +37,23 @@ export function launch(port) {
         case "PWD": 
           socket.write(`257 Requested file action okay, completed. \r\n ${process.cwd()} \r\n`);
           break;
-        case "HELP":
-          let help = "USER <username>: check if the user exist\n" + 
-                     "PASS <password>: authenticate the user with a password\n" +
-                     "LIST: list the current directory of the server\n" +
-                     "CWD <directory>: change the current directory of the server\n" +
-                     "RETR <filename>: transfer a copy of the file FILE from the server to the client\n" +
-                     "STOR <filename>: transfer a copy of the file FILE from the client to the server\n" + 
-                     "PWD: display the name of the current directory of the server\n" +
-                     "HELP: send helpful information to the client\n" + 
-                     "QUIT: close the connection and stop the program\n"; 
-          socket.write(help);
+        case "HELP":   
+          socket.write(`211 System status, or system help reply. \r\n`);
+          const fs = require('fs');
+          fs.readFile(`${__dirname}/commands.json`, 'utf8', (err, data) => {
+              if (err) {
+                  console.log(`Error reading file from disk: ${err}`);
+              } else {
+                  let resp = ""; 
+                  resp += "\r\n-- Commands --\r\n"
+                  const commands = JSON.parse(data);
+                  commands.forEach(cm => {
+                      resp += `•${cm.command}: ${cm.desc}\r\n`
+                  });
+                  socket.write(resp);
+              }
+          });
           break;
-          
         case "QUIT": 
           socket.write(`221 Service closing control connection. \r\n ${process.exit()} \r\n`);
           break;
