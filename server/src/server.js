@@ -102,7 +102,7 @@ export function launch(port) {
           break;
           
         default:
-          console.log("500 Command not supported");
+          socket.write("500 Command not supported, please try again.\n");
       }
     });
     socket.write("220 Hello World \r\n");
