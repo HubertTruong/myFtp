@@ -1,4 +1,4 @@
-import { createServer } from "net";
+import { createServer, SocketAddress } from "net";
 import { userInfo } from "os";
 
 const fs = require("fs");
@@ -20,22 +20,30 @@ export function launch(port) {
             if (err) {
                 console.log(`Error reading file from disk: ${err}`);
             } else {
+                socket.user = args[0];
                 let response = ""; 
                 const commands = JSON.parse(data);
                 commands.forEach(cm => {
-                  if(args == `${cm.user}`){
-                    response += "\nUser recognized, please enter your password now\n";
+                  if(socket.user == cm.user){
+                    socket.pass = cm.pass
+                    response += "\nUser recognized, please use the PASS command to enter your password now\n";
                   }
                   else
                     response += "\nUser unrecognized, please try again\n";
                 });
                 socket.write(response);
             }
-        });
+          });
           break;
 
         case "PASS": 
-          socket.write("331 User name ok, need pass. \r\n");
+          if(args[0] != socket.pass){
+            socket.write("331 Wrong password, please retry. \r\n");
+          } else if(args[0] == socket.pass){
+            socket.write("230 Username and Password valid, logging in \r\n");
+          } else if(args[0] == undefined) {
+            socket.write("501 Syntax error in parameters or arguments. \r\n");
+          }
           break;
 
         case "LIST":
