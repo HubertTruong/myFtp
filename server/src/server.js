@@ -24,10 +24,10 @@ export function launch(port) {
                 const commands = JSON.parse(data);
                 commands.forEach(cm => {
                   if(args == `${cm.user}`){
-                    response += "User recognized, please enter your password now";
+                    response += "\nUser recognized, please enter your password now\n";
                   }
                   else
-                    response += "User unrecognized, please try again";
+                    response += "\nUser unrecognized, please try again\n";
                 });
                 socket.write(response);
             }
@@ -50,7 +50,12 @@ export function launch(port) {
           break;
 
         case "CWD": 
-          socket.write(`250 Requested file action okay, completed. ${process.chdir()} \r\n`); 
+          try{
+            process.chdir(args[0]);
+            socket.write(`257 Requested file action okay, completed. \r\n New directory : ${process.cwd()} \r\n`);
+          }catch(err) {
+            socket.write("Directory not found, please retry\n");
+          }
           break;
           
         case "RETR": 
@@ -83,7 +88,7 @@ export function launch(port) {
           break;
 
         case "QUIT": 
-          socket.write(`221 Service closing control connection. \r\n ${process.exit()} \r\n`);
+          socket.write(`221 Service closing control connection. \r\n ${socket.destroy()} \r\n`);
           break;
           
         default:
