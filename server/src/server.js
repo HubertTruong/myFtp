@@ -1,4 +1,5 @@
 import { createServer } from "net";
+import { userInfo } from "os";
 
 const fs = require("fs");
 
@@ -15,6 +16,22 @@ export function launch(port) {
       switch(command) {
         case "USER": 
           socket.write("230 User logged in, proceed. \r\n");
+          fs.readFile(`${__dirname}/user.json`, 'utf8', (err, data) => {
+            if (err) {
+                console.log(`Error reading file from disk: ${err}`);
+            } else {
+                let response = ""; 
+                const commands = JSON.parse(data);
+                commands.forEach(cm => {
+                  if(args == `${cm.user}`){
+                    response += "User recognized, please enter your password now";
+                  }
+                  else
+                    response += "User unrecognized, please try again";
+                });
+                socket.write(response);
+            }
+        });
           break;
 
         case "PASS": 
@@ -27,13 +44,13 @@ export function launch(port) {
           let answer = "";
           answer += "\r\n-- Files in the current directory --\r\n"
           files.forEach(file => {
-            answer += `${file}\r\n`;
+            answer += `•${file}\r\n`;
           });
           socket.write(answer);
           break;
 
         case "CWD": 
-          socket.write(`250 Requested file action okay, completed. ${process.chdir()} \r\n`);
+          socket.write(`250 Requested file action okay, completed. ${process.chdir()} \r\n`); 
           break;
           
         case "RETR": 
