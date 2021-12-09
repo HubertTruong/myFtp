@@ -1,5 +1,4 @@
 import { createServer, SocketAddress } from "net";
-import { userInfo } from "os";
 
 const fs = require("fs");
 
@@ -15,7 +14,6 @@ export function launch(port) {
 
       switch(command) {
         case "USER": 
-          socket.write("230 User logged in, proceed. \r\n");
           fs.readFile(`${__dirname}/user.json`, 'utf8', (err, data) => {
             if (err) {
                 console.log(`Error reading file from disk: ${err}`);
@@ -26,10 +24,10 @@ export function launch(port) {
                 commands.forEach(cm => {
                   if(socket.user == cm.user){
                     socket.pass = cm.pass
-                    response += "\nUser recognized, please use the PASS command to enter your password now\n";
+                    response += "\n230 Username recognized, use the PASS command to enter your password now\n";
                   }
                   else
-                    response += "\nUser unrecognized, please try again\n";
+                    response += "\n530 Not logged in: Username unrecognized, please try again\n";
                 });
                 socket.write(response);
             }
@@ -38,7 +36,7 @@ export function launch(port) {
 
         case "PASS": 
           if(args[0] != socket.pass){
-            socket.write("331 Wrong password, please retry. \r\n");
+            socket.write("331 Username recognized but wrong password, please retry. \r\n");
           } else if(args[0] == socket.pass){
             socket.write("230 Username and Password valid, logging in \r\n");
           } else if(args[0] == undefined) {
@@ -62,7 +60,7 @@ export function launch(port) {
             process.chdir(args[0]);
             socket.write(`257 Requested file action okay, completed. \r\n New directory : ${process.cwd()} \r\n`);
           }catch(err) {
-            socket.write("Directory not found, please retry\n");
+            socket.write("550 Directory not found, please retry\n");
           }
           break;
           
@@ -100,7 +98,7 @@ export function launch(port) {
           break;
           
         default:
-          console.log("Command not supported");
+          console.log("500 Command not supported");
       }
 
     });
