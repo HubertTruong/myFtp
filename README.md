@@ -20,4 +20,5 @@ I managed to code only 7 on the 9 commands asked :
 > ```RETR``` and ```STOR``` were too difficult for me to code and after trying to look for some examples on Internet, I couldn't code it because of my lack of skills.
 ## Notes
 This project was a good initiation to FTP servers and clients, but it was really complicated at the beginning since I never used NodeJS and I'm not used to code in Javascript. I should have check videos by myself instead of only following the course.
-However, I learnt a lot and understood the things I didn't in the beginning. It was a cool project to be honest. I was proud of myself after succesfully coded the commands and saw them working in my terminal.
+However, I learnt a lot and understood the things I didn't in the beginning. It was a cool project to be honest. I was proud of myself after succesfully coded the commands and saw them working in my terminal. <br />
+I finished my code after documentated it, by writing in which wway cosists a command. I'm not sure if the 
